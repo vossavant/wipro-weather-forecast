@@ -3,19 +3,20 @@
 		<TheIntro />
 		<div v-if="response">
 			<h3>Response</h3>
-			<h5>City: {{ response.city }}</h5>
-			<pre>{{ response.list }}</pre>
-			/////////
-			<pre>{{ response }}</pre>
-			=============================
-			=============================
-			=============================
-			<div v-show="everyEighthResult(index)" v-for="(item, index) in response.list" :key="index">
-				<h4>DT Text: {{ item.dt_txt }}</h4>
-				<h4>Main: {{ item.main }}</h4>
-				<pre>{{ item }}</pre>
+			<!-- <h5>City: {{ response.city }}</h5> -->
+			<!-- <pre>{{ response.list }}</pre> -->
+			<!-- ///////// -->
+			<!-- <pre>{{ response }}</pre> -->
+			<!-- ============================= -->
+			<!-- ============================= -->
+			<!-- ============================= -->
+			<div class="card-wrap">
+				<WeatherCard
+					v-for="(dailyForecast, index) in filteredResponse"
+					v-bind="dailyForecast"
+					:key="index"
+				/>
 			</div>
-			
 		</div>
 		<div v-else>
 			<h3>Eek! Something Went Wrong...</h3>
@@ -26,11 +27,19 @@
 
 <script>
 	import TheIntro from './components/TheIntro.vue';
+	import WeatherCard from './components/WeatherCard.vue';
 	const axios = require('axios');
 
 	export default {
 		components: {
-			TheIntro
+			TheIntro,
+			WeatherCard
+		},
+		computed: {
+			// API returns 40 total times across 5 days; we are only interested in one time per day, so return each 8th time
+			filteredResponse() {
+				return this.response.list.filter((v, i) => i % 8 === 0);
+			}
 		},
 		created () {
 			this.loadWeatherData();
@@ -43,11 +52,6 @@
 			}
 		},
 		methods: {
-			// API returns 40 total times across 5 days; we are only interested in one time per day, so return each 8th time
-			everyEighthResult(i) {
-				return i % 8 === 0;
-			},
-
 			loadWeatherData() {
 				let self = this;
 				axios
@@ -64,8 +68,15 @@
 	};
 </script>
 
-<style lang='scss'>
-	h1 {
-		color: saddlebrown;
+<style lang="scss">
+	*, 
+	*::before, 
+	*::after {
+		box-sizing: border-box;
+	}
+
+	.card-wrap {
+		display: flex;
+		justify-content: space-between;
 	}
 </style>
