@@ -1,28 +1,54 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+	<div>
+		<TheIntro />
+		<div v-if="responseError">
+			<h3>Eek! Something Went Wrong...</h3>
+			<div v-html="responseError"></div>
+		</div>
+		<div v-else>
+			<h3>Response</h3>
+			{{ response }}
+		</div>
+	</div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+	import TheIntro from './components/TheIntro.vue';
+	const axios = require('axios');
 
-export default {
-  name: "app",
-  components: {
-    HelloWorld
-  }
-};
+	export default {
+		components: {
+			TheIntro
+		},
+		created () {
+			this.loadWeatherData();
+		},
+		data() {
+			return {
+				apiKey: 'b2763e469c8ae7d0017e29614b8b9cd7',
+				response: null,
+				responseError: null
+			}
+		},
+		methods: {
+			loadWeatherData() {
+				let self = this;
+				axios
+					// .get('https://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=' + self.apiKey)
+					.get('http://localhost:8080/weather-data.json')
+					.then(function(response) {
+						self.response = response.data;
+					})
+					.catch(function(error) {
+						self.responseError = error
+					});
+			}
+		},
+	};
 </script>
 
-<style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang='scss'>
+	h1 {
+		color: saddlebrown;
+	}
 </style>
