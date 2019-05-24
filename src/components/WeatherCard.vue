@@ -98,6 +98,8 @@
         background-repeat: no-repeat !important;
         background-position: center left !important;
         line-height: 24px;
+        margin-bottom: 4px;
+        opacity: 0.35;
         overflow: hidden;
         text-indent: 100%;
         white-space: nowrap;
