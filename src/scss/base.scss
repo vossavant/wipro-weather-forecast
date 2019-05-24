@@ -6,7 +6,17 @@
     box-sizing: border-box;
 }
 
+a {
+    color: #1D71B0;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
 body {
+    background: $base-ui;
+    color: $base-text;
     font: 16px/1 'Quattrocento Sans', sans-serif;
     margin: 0;
 }
