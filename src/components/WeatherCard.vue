@@ -1,19 +1,59 @@
 <template>
     <article>
-        <h1>{{ dt_txt }}</h1>
-        <p>Main stuff:</p>
-        {{ main }}
+        <header>
+            {{ weather[0].main }}
+            {{ formattedTemp }}&deg;
+        </header>
+        <div class="whatever">
+            <h3>{{ city.name }}, {{ city.country }}</h3>
+            <p>{{ formattedMonth }} {{ formattedDate }}</p>
+        </div>
+        <p>{{ formattedDay }}</p>
+
+        <h4>Temp</h4>
+        <pre>{{ main }}</pre>
+
+        <h4>Weather</h4>
+        <pre>{{ weather }}</pre>
     </article>
 </template>
 
 <script>
 export default {
+    computed: {
+        formattedDate() {
+            return this.dateTime.getDate();
+        },
+
+        formattedDay() {
+            return this.dateTime.toLocaleString('default', { weekday: 'short' });
+        },
+
+        formattedMonth() {
+            return this.dateTime.toLocaleString('default', { month: 'long' });
+        },
+
+        formattedTemp() {
+            return Math.round(this.main.temp);
+        }
+    },
+
+    data() {
+        return {
+            dateTime: new Date(this.dt * 1000)
+        }
+    },
+
     props: {
-        dt_txt: {
-            type: String
+        city: String,
+        dt: {
+            type: Number
         },
         main: {
             type: Object
+        },
+        weather: {
+            type: Array
         }
     }
 }

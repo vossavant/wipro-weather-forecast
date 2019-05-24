@@ -2,18 +2,12 @@
 	<div>
 		<TheIntro />
 		<div v-if="response">
-			<h3>Response</h3>
-			<!-- <h5>City: {{ response.city }}</h5> -->
-			<!-- <pre>{{ response.list }}</pre> -->
-			<!-- ///////// -->
 			<!-- <pre>{{ response }}</pre> -->
-			<!-- ============================= -->
-			<!-- ============================= -->
-			<!-- ============================= -->
 			<div class="card-wrap">
 				<WeatherCard
 					v-for="(dailyForecast, index) in filteredResponse"
 					v-bind="dailyForecast"
+					:city=response.city
 					:key="index"
 				/>
 			</div>
@@ -35,15 +29,18 @@
 			TheIntro,
 			WeatherCard
 		},
+
 		computed: {
 			// API returns 40 total times across 5 days; we are only interested in one time per day, so return each 8th time
 			filteredResponse() {
 				return this.response.list.filter((v, i) => i % 8 === 0);
 			}
 		},
+		
 		created () {
 			this.loadWeatherData();
 		},
+		
 		data() {
 			return {
 				apiKey: 'b2763e469c8ae7d0017e29614b8b9cd7',
@@ -51,6 +48,7 @@
 				responseError: null
 			}
 		},
+		
 		methods: {
 			loadWeatherData() {
 				let self = this;
@@ -69,11 +67,7 @@
 </script>
 
 <style lang="scss">
-	*, 
-	*::before, 
-	*::after {
-		box-sizing: border-box;
-	}
+	@import "scss/base.scss";
 
 	.card-wrap {
 		display: flex;
