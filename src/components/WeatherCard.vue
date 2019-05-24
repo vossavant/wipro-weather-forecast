@@ -17,7 +17,7 @@
                     </div>
                     <div title="Wind speed and direction">
                         <dt class="wind">Wind</dt>
-                        <dd>{{ wind.speed }} mph / {{ wind.deg }}</dd>
+                        <dd>{{ formattedWindSpeed }} mph / {{ formattedWindDirection }}&deg;</dd>
                     </div>
                     <div title="Humidity">
                         <dt class="humidity">Humidity</dt>
@@ -37,7 +37,7 @@
 			},
 
 			formattedDay() {
-				return new Date().getDay() === this.dateTime.getUTCDay()
+				return new Date().getDay() === this.dateTime.getDay()
 					? "Today"
 					: this.dateTime.toLocaleString("default", { weekday: "short" });
 			},
@@ -52,7 +52,16 @@
 
 			formattedType() {
 				return "weather-card--" + this.weather[0].main.toLowerCase();
-			}
+            },
+
+            formattedWindDirection() {
+                // TODO: map to direction
+                return Math.round(this.wind.deg);
+            },
+            
+            formattedWindSpeed() {
+                return this.wind.speed.toFixed(1);
+            }
 		},
 
 		data() {
@@ -81,6 +90,24 @@
 </script>
 
 <style lang="scss" scoped>
+    @mixin gradient($opacity) {
+        background: -moz-linear-gradient(
+            top,
+            rgba(0, 0, 0, $opacity) 0%,
+            rgba(0, 0, 0, 0) 100%
+        );
+        background: -webkit-linear-gradient(
+            top,
+            rgba(0, 0, 0, $opacity) 0%,
+            rgba(0, 0, 0, 0) 100%
+        );
+        background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, $opacity) 0%,
+            rgba(0, 0, 0, 0) 100%
+        );
+    }
+
     dl,
     dd {
         margin: 0;
@@ -88,21 +115,26 @@
 
     dl {
         display: flex;
+        flex-direction: column;
+
+        div {
+            line-height: 24px;
+            margin-bottom: 4px;
+        }
     }
 
     dd {
-        width: 33%;
+        color: #B4B4B6;
+        padding-left: 36px;
     }
 
     dt {
         background-repeat: no-repeat !important;
         background-position: center left !important;
+        color: #EA526F;
         line-height: 24px;
-        margin-bottom: 4px;
-        opacity: 0.35;
-        overflow: hidden;
-        text-indent: 100%;
-        white-space: nowrap;
+        padding-left: 36px;
+        width: 100%;
 
         &.clouds {
             background: url('../assets/cloud.svg');
@@ -135,22 +167,7 @@
 		width: 19%;
 
 		&:before {
-			background: -moz-linear-gradient(
-				top,
-				rgba(0, 0, 0, 0.65) 0%,
-				rgba(0, 0, 0, 0) 100%
-			);
-			background: -webkit-linear-gradient(
-				top,
-				rgba(0, 0, 0, 0.65) 0%,
-				rgba(0, 0, 0, 0) 100%
-			);
-			background: linear-gradient(
-				to bottom,
-				rgba(0, 0, 0, 0.65) 0%,
-				rgba(0, 0, 0, 0) 100%
-			);
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 );
+            @include gradient(0.35);
 			bottom: 0;
 			content: "";
 			position: absolute;
@@ -159,6 +176,11 @@
 			right: 0;
 		}
 
+        &--clear {
+            // Unsplash: https://unsplash.com/photos/I8lKrHE3p7k
+            background: url("../assets/weather/clear.jpg");
+        }
+
 		&--clouds {
 			// Unsplash: https://unsplash.com/photos/4C6Rp23RjnE
 			background: url("../assets/weather/clouds.jpg");
@@ -166,8 +188,17 @@
 
 		&--rain {
 			// Unsplash: https://unsplash.com/photos/1YHXFeOYpN0
-			background: url("../assets/weather/rain.jpg");
-		}
+            background: url("../assets/weather/rain.jpg");
+            
+            &:before {
+                @include gradient(0.65);
+            }
+        }
+        
+        &--snow {
+            // Unsplash: https://unsplash.com/photos/5AiWn2U10cw
+            background: url("../assets/weather/snow.jpg");   
+        }
 
 		&__inner {
 			position: relative;
