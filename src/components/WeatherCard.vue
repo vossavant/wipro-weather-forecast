@@ -10,16 +10,21 @@
 					<span class="weather-day">{{ formattedDay }}</span>
 					<h1>{{ formattedMonth }} {{ formattedDate }}</h1>
 				</header>
+                <dl>
+                    <div title="Cloud Cover">
+                        <dt class="clouds">Cloud Cover</dt>
+                        <dd>{{ clouds.all }}%</dd>
+                    </div>
+                    <div title="Wind speed and direction">
+                        <dt class="wind">Wind</dt>
+                        <dd>{{ wind.speed }} mph / {{ wind.deg }}</dd>
+                    </div>
+                    <div title="Humidity">
+                        <dt class="humidity">Humidity</dt>
+                        <dd>{{ main.humidity }}%</dd>
+                    </div>
+                </dl>
 			</div>
-
-			<!-- <h4>Cloud Cover</h4>
-            {{ clouds }}
-
-            <h4>Temp</h4>
-            <pre>{{ main }}</pre>
-
-            <h4>Weather</h4>
-			<pre>{{ weather }}</pre>-->
 		</div>
 	</article>
 </template>
@@ -59,19 +64,57 @@
 		props: {
 			clouds: Object,
 			dt: {
-				type: Number
+                type: Number,
+                required: true
 			},
 			main: {
-				type: Object
+                type: Object,
+                required: true
 			},
 			weather: {
-				type: Array
-			}
+                type: Array,
+                required: true
+            },
+            wind: Object
 		}
 	};
 </script>
 
 <style lang="scss" scoped>
+    dl,
+    dd {
+        margin: 0;
+    }
+
+    dl {
+        display: flex;
+    }
+
+    dd {
+        width: 33%;
+    }
+
+    dt {
+        background-repeat: no-repeat !important;
+        background-position: center left !important;
+        line-height: 24px;
+        overflow: hidden;
+        text-indent: 100%;
+        white-space: nowrap;
+
+        &.clouds {
+            background: url('../assets/cloud.svg');
+        }
+    
+        &.humidity {
+            background: url('../assets/droplet.svg');
+        }
+    
+        &.wind {
+            background: url('../assets/wind.svg');
+        }
+    }
+
 	h1 {
         font-size: 24px;
 		margin-top: 8px;
@@ -151,20 +194,20 @@
 		&:after,
 		&:before {
 			background: white;
-			bottom: 85%;
 			content: "";
 			height: 32px;
 			left: -4px;
 			position: absolute;
 			right: -4px;
+			top: -16px;
 			transform: rotate(-6deg);
 		}
 
 		&:after {
-			bottom: 95%;
-			background: transparentize($color: white, $amount: 0.5);
+            background: transparentize($color: white, $amount: 0.5);
 			border-top-right-radius: 2px;
 			right: 24px;
+			top: -24px;
 		}
 	}
 
