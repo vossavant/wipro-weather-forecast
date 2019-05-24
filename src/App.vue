@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="wrapper">
 		<TheIntro />
 		<div v-if="response">
 			<!-- <pre>{{ response }}</pre> -->
@@ -68,6 +68,12 @@
 
 <style lang="scss">
 	@import "scss/base.scss";
+
+	// TODO: move these to scoped component files
+	.wrapper {
+		margin: 0 auto;
+		max-width: $wrapper-width;
+	}
 
 	.card-wrap {
 		display: flex;
