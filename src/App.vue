@@ -71,7 +71,7 @@
 
 	// TODO: move these to scoped component files
 	.wrapper {
-		margin: 0 auto;
+		margin: 32px auto;
 		max-width: $wrapper-width;
 	}
 
