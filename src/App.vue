@@ -101,8 +101,9 @@
 
 	// TODO: move these to scoped component files
 	.wrapper {
-		margin: 32px auto;
+		margin: 48px auto;
 		max-width: $wrapper-width;
+		padding: 0 48px;
 	}
 
 	.card-wrap {
