@@ -69,6 +69,7 @@
 		border: 0;
 		border-bottom: 2px solid #ccc;
 		font-size: 48px;
+		max-width: 426px;
 		transition: background 250ms ease-in-out;
 
 		&:focus {
